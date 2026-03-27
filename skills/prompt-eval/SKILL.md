@@ -9,11 +9,12 @@ Turn prompt quality from opinion into measurable checks.
 
 ## Evaluation framework
 
-Split checks into four categories:
+Split checks into five categories:
 
-- outcome: did the result solve the task?
-- process: did the model follow required steps or tool rules?
-- style: did it match the requested format and tone?
+- task fidelity: did the result solve the real task correctly?
+- process compliance: did the model follow required steps or tool rules?
+- format or schema compliance: did it return the requested shape exactly?
+- robustness: did it handle ambiguity, missing data, conflicts, and hostile context safely?
 - efficiency: did it avoid unnecessary steps, verbosity, or retries?
 
 ## What to generate
@@ -23,6 +24,7 @@ Split checks into four categories:
 3. Deterministic checks where possible
 4. Rubric-based checks where necessary
 5. Regression cases for previously observed failures
+6. Notes on what should be checked automatically versus manually
 
 ## Test case design rules
 
@@ -30,12 +32,17 @@ Include:
 - happy path
 - edge case
 - ambiguous input
-- adversarial / conflicting instruction case
+- adversarial or conflicting instruction case
 - incomplete or incompatible input case
 - strict output-format compliance case
 - tool-use prerequisite case (if tools are involved)
+- prompt-injection or untrusted-context boundary case (if external content is involved)
+- long-context placement case (if the prompt relies on large context windows)
+- migration case when comparing model families or prompt versions
 
 Prefer small, focused, must-pass checks over giant impressionistic rubrics.
+
+Read [references/eval-patterns.md](references/eval-patterns.md) when the prompt uses tools, long context, strict schemas, or judge-model scoring.
 
 ## Output contract
 
@@ -56,7 +63,7 @@ Provide a table or structured list with:
 How each case is graded.
 
 ### Regression watchlist
-The 3–5 most likely ways this prompt will fail again.
+The 3-5 most likely ways this prompt will fail again.
 
 ## Definition of done
 

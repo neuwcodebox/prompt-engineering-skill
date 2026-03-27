@@ -1,106 +1,97 @@
 # Prompt Skill Pack
 
-A practical skill pack for coding agents to write, revise, normalize, and evaluate prompts with a structured, test-driven workflow.
+A practical skill pack for coding agents to write, revise, normalize, and evaluate prompts with an explicit, test-driven workflow.
 
 ## Overview
 
-This repository provides a small set of agent skills for prompt engineering in real-world coding-agent environments.
+This repository packages prompt engineering as a software workflow:
 
-It is designed for agents that need to:
+- normalize the request before writing
+- author the smallest reliable prompt
+- edit existing prompts with minimal deltas
+- evaluate every important prompt change
 
-- write prompts from scratch
-- revise existing prompts with minimal, targeted edits
-- normalize vague prompt requests into a clear specification
-- generate evaluation cases for prompt regression testing
+The pack is meant for real agent environments where prompt quality depends on more than wording. It pushes agents to make the contract explicit:
 
-The pack treats prompt engineering as an engineering workflow rather than a writing exercise.  
-Instead of optimizing for "nice wording," it focuses on:
+- what the model must do
+- what context is trusted
+- what is forbidden
+- what output is required
+- when tools or schemas should replace prose
+- how success will be tested
 
-- clear task contracts
-- explicit constraints
-- output guarantees
-- failure-mode analysis
-- evaluation-driven iteration
+## Design principles
 
-## Why this exists
+The skills in this repo bias toward the patterns repeated across current official vendor guidance:
 
-When prompt work is handled ad hoc, several problems appear quickly:
-
-- goals are underspecified
-- constraints are mixed with background context
-- output format is not truly enforced
-- edits become full rewrites even when small fixes would be better
-- prompt changes are made without regression tests
-
-This pack breaks the process into reusable skills so an agent can make prompt work more systematic and more reliable.
+- put critical instructions and output rules first
+- separate instructions from bulk context and user data
+- mark truth boundaries and insufficient-information behavior
+- use structured outputs or tool schemas for hard format guarantees
+- add examples only when they solve a measured failure mode
+- keep prompts short enough to stay legible and debuggable
+- treat prompt changes as incomplete until eval coverage exists
+- distinguish prompt problems from model, retrieval, tool, or data problems
 
 ## Included skills
 
 ### 1. `prompt-brief-normalizer`
 
-Turns a vague request, scattered notes, or an existing prompt into a normalized brief.
+Turn a vague request, notes dump, or existing prompt into a reusable brief.
 
-It extracts and organizes:
+It extracts:
 
-- goal
-- context
-- constraints
-- output contract
+- task type and interaction pattern
+- model or provider constraints
+- trusted vs untrusted context boundaries
+- output and tool/schema requirements
 - definition of done
-- likely failure modes
+- failure modes, assumptions, and next-step recommendation
 
-Use this first when the request is ambiguous or the existing prompt is messy.
-
----
+Use this first when the request is ambiguous or the current prompt is poorly structured.
 
 ### 2. `prompt-author`
 
-Creates a new prompt from scratch using a structured template.
+Write a new prompt from scratch from a normalized brief or raw request.
 
-It is intended for cases where the agent needs to generate a fresh prompt rather than patch an existing one.
+It emphasizes:
 
-Typical output structure includes:
+- ordered prompt blocks
+- model-fit decisions
+- context placement for long inputs
+- schema-first thinking for structured outputs
+- explicit ambiguity handling and completion criteria
 
-- role or task framing
-- objective
-- context handling rules
-- constraints
-- output requirements
-- tool-use rules
-- completion criteria
-
----
+Use this when there is no good existing prompt to preserve.
 
 ### 3. `prompt-editor`
 
-Improves an existing prompt with minimal, targeted edits.
+Revise an existing prompt with the smallest set of changes that materially improves reliability.
 
-It is designed to avoid unnecessary rewrites and instead focuses on diagnosing issues such as:
+It focuses on:
 
-- contradictory instructions
-- missing output requirements
-- weak completion criteria
-- unclear tool-use rules
-- overlong or decorative wording
-- examples that do not match the intended behavior
+- contradiction removal
+- block ordering
+- example alignment
+- tool-use and verification rules
+- prompt-injection and untrusted-context boundaries
+- model-family migration adjustments
 
-Use this when preserving the original intent matters.
-
----
+Use this when the original prompt has useful intent or domain language worth keeping.
 
 ### 4. `prompt-eval`
 
-Creates evaluation cases for prompt testing and regression checks.
+Create measurable eval cases, scoring rules, and regression checks for prompt changes.
 
-It helps define test cases across dimensions such as:
+It emphasizes:
 
-- outcome quality
-- process compliance
-- format correctness
-- edge-case handling
-- efficiency or unnecessary verbosity
+- task-distribution coverage
+- deterministic checks where possible
+- judge-model checks only where needed
+- regression cases for known failures
+- robustness against ambiguity, missing data, and conflicting instructions
 
-Use this whenever a prompt will be reused, versioned, or deployed.
+Use this whenever a prompt is reused, shipped, versioned, or migrated.
 
 ## Repository structure
 
@@ -112,6 +103,8 @@ skills/
     SKILL.md
     assets/
       prompt-template.md
+    references/
+      prompt-patterns.md
   prompt-editor/
     SKILL.md
     assets/
@@ -120,3 +113,21 @@ skills/
     SKILL.md
     assets/
       eval-template.md
+    references/
+      eval-patterns.md
+```
+
+## References
+
+- OpenAI, Prompt Engineering:
+  https://developers.openai.com/api/docs/guides/prompt-engineering
+- OpenAI, Structured Outputs:
+  https://developers.openai.com/api/docs/guides/structured-outputs
+- OpenAI, Using GPT-5.4:
+  https://developers.openai.com/api/docs/guides/latest-model
+- Anthropic, Claude Prompting Best Practices:
+  https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+- Anthropic, Define Success Criteria and Build Evaluations:
+  https://platform.claude.com/docs/en/test-and-evaluate/develop-tests
+- Google AI for Developers, Prompt Design Strategies:
+  https://ai.google.dev/gemini-api/docs/prompting-strategies

@@ -12,20 +12,29 @@ Turn scattered requirements into a compact, explicit brief that downstream promp
 Produce a normalized brief with these fields:
 
 - `task_type`: one of `new_prompt`, `revise_prompt`, `migrate_prompt`, `debug_prompt`, `agent_prompt`, `tool_prompt`, `structured_output_prompt`
+- `interaction_pattern`: one of `direct_answer`, `classification`, `extraction`, `tool_using_agent`, `coding_agent`, `long_context_synthesis`, `workflow_orchestrator`
 - `target_model_or_family`
 - `provider`
+- `response_mode`: one of `freeform`, `template`, `json_schema`, `tool_call`, `mixed`
 - `primary_goal`
 - `user_intent`
 - `available_context`
 - `inputs`
+- `trusted_inputs`
+- `untrusted_inputs`
+- `context_boundaries`
 - `constraints`
 - `output_contract`
 - `tooling_or_schema_requirements`
+- `example_strategy`
+- `model_fit_notes`
+- `preserve_blocks`
 - `definition_of_done`
 - `known_failure_modes`
+- `non_prompt_causes_to_check`
+- `eval_need`
 - `assumptions`
 - `open_questions`
-- `recommended_next_skill`
 
 ## Operating rules
 
@@ -35,7 +44,11 @@ Produce a normalized brief with these fields:
 4. Separate facts from assumptions.
 5. If the user supplied an existing prompt, parse it into blocks and record which blocks should likely be preserved.
 6. If the request implies hard formatting guarantees, note that this likely needs structured outputs or a tool schema rather than prompt-only wording.
-7. If the issue sounds like model choice, retrieval quality, tool design, or missing evals rather than prompt wording, say so clearly.
+7. Distinguish prompt problems from model choice, retrieval quality, tool design, data quality, or missing evals. If the prompt is not the primary bottleneck, say so clearly.
+8. Record where long context should appear relative to the instructions and final task request.
+9. Mark whether the prompt must defend against prompt injection or untrusted retrieved content.
+10. Flag examples that should be preserved, removed, or rewritten because they no longer match the intended behavior.
+11. If the request implies a model-family migration, capture the reason for migration and the behaviors that must remain invariant.
 
 ## Output contract
 

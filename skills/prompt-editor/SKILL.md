@@ -16,14 +16,19 @@ Default to minimal, high-leverage edits first. Escalate to structural rewrite on
 Inspect the prompt for:
 
 - contradictory instructions
+- instructions hidden after long background context
 - unclear or missing output format
 - vague success criteria
 - examples that conflict with the written rules
+- examples that overfit to a narrow case or teach the wrong pattern
 - missing tool-use prerequisites or verification rules
+- tool instructions that fail to say whether tool use is optional, required, or forbidden
 - prompt blocks in the wrong order
-- verbosity / persona instructions that interfere with the task
+- verbosity or persona instructions that interfere with the task
 - reasoning instructions that do not fit the target model family
 - hard format requirements that should be schema-enforced instead
+- mixed trusted instructions and untrusted inserted content
+- missing handling for prompt injection or hostile retrieved content
 - missing ambiguity handling
 - missing definition of done
 
@@ -36,6 +41,11 @@ Inspect the prompt for:
 5. Add examples only if they solve a measured failure mode.
 6. When revising for a new model family, state what changed because of the target model's behavior.
 7. If the original prompt is too bloated, compress repeated rules into a smaller number of stronger blocks.
+8. If the prompt mixes instructions with injected documents or user content, separate them with headings or tags.
+9. If format compliance is the real issue, move brittle prose rules into a schema or tool interface recommendation.
+10. Keep edits local when possible so the downstream diff is easy to review.
+
+Use [assets/edit-checklist.md](assets/edit-checklist.md) when you need a compact inspection pass before rewriting.
 
 ## Output contract
 
