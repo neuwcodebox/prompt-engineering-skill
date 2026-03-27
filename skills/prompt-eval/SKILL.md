@@ -1,11 +1,17 @@
 ---
 name: prompt-eval
-description: Create eval cases, scoring rules, and regression tests for a prompt or prompt-based skill. Use after writing or revising prompts, especially before publishing, changing models, or comparing prompt versions. Do not use when the user only wants the prompt text and no quality harness.
+description: Create eval cases, scoring rules, and regression tests for a prompt or prompt-based skill. Use after writing or revising prompts, especially before publishing, changing models, or comparing prompt versions. Do not use when the user only wants the prompt text and no quality harness, and do not use for grading a business task without a prompt artifact in scope.
 ---
 
 ## Purpose
 
 Turn prompt quality from opinion into measurable checks.
+
+## Artifact boundary
+
+- Evaluate the behavior of the prompt artifact, not the abstract domain task in isolation.
+- If the prompt is for a task such as news classification, test label correctness, abstention behavior, format compliance, and instruction-following as properties of the prompt.
+- Prefer checks that can catch regressions after future prompt edits or model migrations.
 
 ## Evaluation framework
 

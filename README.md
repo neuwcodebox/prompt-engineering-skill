@@ -11,6 +11,8 @@ This repository packages prompt engineering as a software workflow:
 - edit existing prompts with minimal deltas
 - evaluate every important prompt change
 
+The skills produce prompt artifacts such as system prompts, developer prompts, reusable templates, and eval suites. They are not a substitute for performing the downstream business task itself.
+
 The pack is meant for real agent environments where prompt quality depends on more than wording. It pushes agents to make the contract explicit:
 
 - what the model must do
@@ -99,6 +101,8 @@ Use this whenever a prompt is reused, shipped, versioned, or migrated.
 skills/
   prompt-brief-normalizer/
     SKILL.md
+    assets/
+      brief-template.md
   prompt-author/
     SKILL.md
     assets/

@@ -1,11 +1,17 @@
 ---
 name: prompt-brief-normalizer
-description: Normalize a vague prompt request or prompt-related task into a reusable brief. Use when the user wants to create a new prompt, improve an existing prompt, migrate prompts between model families, or diagnose why a prompt is failing. Do not use for executing the underlying business task when no reusable prompt artifact is needed.
+description: Normalize a vague request, notes dump, or existing prompt into a reusable prompt brief. Use when the user wants to create a new prompt, improve an existing prompt, migrate prompts between model families, or diagnose why a prompt is failing. Do not use for executing the underlying business task when no reusable prompt artifact is needed.
 ---
 
 ## Purpose
 
 Turn scattered requirements into a compact, explicit brief that downstream prompt-writing or prompt-editing skills can use reliably.
+
+## Artifact boundary
+
+- Produce a prompt brief, not the business-task result.
+- If the user mentions a domain task such as news classification, define the prompt contract for that task instead of classifying the news.
+- Prefer reusable prompt-design language over one-off task advice.
 
 ## What to extract
 
@@ -13,6 +19,7 @@ Produce a normalized brief with these fields:
 
 - `task_type`: one of `new_prompt`, `revise_prompt`, `migrate_prompt`, `debug_prompt`, `agent_prompt`, `tool_prompt`, `structured_output_prompt`
 - `interaction_pattern`: one of `direct_answer`, `classification`, `extraction`, `tool_using_agent`, `coding_agent`, `long_context_synthesis`, `workflow_orchestrator`
+- `prompt_artifact_type`: one of `system_prompt`, `developer_prompt`, `layered_prompt`, `prompt_template`, `tool_schema`, `eval_plan`, `mixed`
 - `target_model_or_family`
 - `provider`
 - `response_mode`: one of `freeform`, `template`, `json_schema`, `tool_call`, `mixed`
@@ -49,6 +56,8 @@ Produce a normalized brief with these fields:
 9. Mark whether the prompt must defend against prompt injection or untrusted retrieved content.
 10. Flag examples that should be preserved, removed, or rewritten because they no longer match the intended behavior.
 11. If the request implies a model-family migration, capture the reason for migration and the behaviors that must remain invariant.
+
+Use [assets/brief-template.md](assets/brief-template.md) when a structured brief template will help the next skill move faster.
 
 ## Output contract
 

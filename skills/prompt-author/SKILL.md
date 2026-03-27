@@ -1,11 +1,17 @@
 ---
 name: prompt-author
-description: Write a reusable prompt from scratch for an assistant, coding agent, tool-using agent, or structured-output workflow. Use when the user has no existing prompt or when the current prompt is too weak to salvage. Do not use for small edits to an existing prompt when a targeted rewrite is more appropriate.
+description: Write a reusable prompt artifact from scratch for an assistant, coding agent, tool-using agent, or structured-output workflow. Use when the user has no existing prompt or when the current prompt is too weak to salvage. Do not use for small edits to an existing prompt when a targeted rewrite is more appropriate, and do not use for performing the downstream business task itself.
 ---
 
 ## Purpose
 
 Generate a production-usable prompt artifact from a normalized brief or raw request.
+
+## Artifact boundary
+
+- Produce the prompt, template, schema recommendation, or layered message set that another system will run.
+- Do not perform the user's end task as the final deliverable.
+- If the example domain is news classification, write the classification prompt and output contract instead of classifying sample articles.
 
 ## Core principle
 
@@ -33,6 +39,7 @@ Write the shortest prompt that still makes the model reliable. Do not add decora
    - no tools, optional tools, or required tools
    - freeform answer, reusable template, JSON schema, or tool call
    - zero-shot or few-shot
+   - single `system` prompt, layered `system` / `developer` / `user` messages, or another deployment surface that matches the target runtime
 3. Build the prompt in ordered blocks:
    - role / identity
    - objective
@@ -53,6 +60,7 @@ Write the shortest prompt that still makes the model reliable. Do not add decora
 7. If the target model family is a reasoning family, prefer lightweight planning or self-check instructions over requests for full hidden reasoning transcripts.
 8. If the task is long-context, place the bulk context before the final action request and use a clear transition such as `Based on the context above`.
 9. If the prompt will be reused across providers or model families, keep provider-specific tactics isolated in notes rather than mixing them into universal instructions.
+10. If the prompt is intended for repeated use, seed the follow-up eval work so `prompt-eval` can turn the draft into a measurable regression harness.
 
 Read [references/prompt-patterns.md](references/prompt-patterns.md) when the task involves long context, structured outputs, few-shot examples, or model-family migration.
 

@@ -1,11 +1,17 @@
 ---
 name: prompt-editor
-description: Diagnose and revise an existing prompt for clarity, reliability, model fit, tool behavior, format compliance, or reduced ambiguity. Use when a prompt already exists and should be improved rather than replaced. Do not use for blank-slate prompt creation unless the original prompt is unsalvageable.
+description: Diagnose and revise an existing prompt artifact for clarity, reliability, model fit, tool behavior, format compliance, or reduced ambiguity. Use when a prompt already exists and should be improved rather than replaced. Do not use for blank-slate prompt creation unless the original prompt is unsalvageable, and do not use for performing the downstream business task itself.
 ---
 
 ## Purpose
 
 Improve an existing prompt without losing valid constraints, domain language, or proven behaviors.
+
+## Artifact boundary
+
+- Edit the prompt artifact, not the task output the prompt would later produce.
+- If the prompt is for a task such as news classification, preserve the label policy and system behavior unless the requested change explicitly alters that contract.
+- Prefer the smallest diff that fixes the real reliability problem.
 
 ## Editing policy
 
@@ -44,6 +50,7 @@ Inspect the prompt for:
 8. If the prompt mixes instructions with injected documents or user content, separate them with headings or tags.
 9. If format compliance is the real issue, move brittle prose rules into a schema or tool interface recommendation.
 10. Keep edits local when possible so the downstream diff is easy to review.
+11. If the real gap is missing evaluation coverage rather than prompt wording, say so and hand off concrete cases for `prompt-eval`.
 
 Use [assets/edit-checklist.md](assets/edit-checklist.md) when you need a compact inspection pass before rewriting.
 
